@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Flask API service
+  api:
+    build: .  # Builds the image from the Dockerfile in current directory
+    container_name: flask_api
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+    depends_on:
+      - ppostgres
+
+  ppostgres:
+    image: postgres:14-alpine
+    container_name: postgres_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+    ports:
+      - "5433:5432"
+
+volumes:
+  postgres_data: 
